@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 
 const signIn = async (req, res) => {
+  console.log("Sign in")
   try {
     const { email, password } = req.body;
 
@@ -32,7 +33,7 @@ const signIn = async (req, res) => {
 };
 
 const signUp = async (req, res, next) => {
-
+  console.log("Sigin up")
   try {
     const { firstName, lastName, email, password, district, phoneNumber, role } = req.body;
 

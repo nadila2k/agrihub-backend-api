@@ -9,6 +9,10 @@ const Crops = require("./models/cropsModel.js");
 const CropsStatistic = require("./models/cropsStatisticModel.js");
 const FarmerStatistic  = require("./models/farmerStatisticModel.js");
 const Product  = require("./models/productModel.js");
+const Years = require("./models/yearsModel.js");
+const progress = require("./models/progressModel.js");
+const Blog = require("./models/blogModel.js");
+
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,6 +31,9 @@ app.use("/api/v1/crops", require("./routers/cropsRouter"));
 app.use("/api/v1/cropsStatistic", require("./routers/cropsStatisticRouter"));
 app.use("/api/v1/farmerStatistic", require("./routers/farmerStatisticRouter"));
 app.use("/api/v1/product", require("./routers/productsRouter"));
+app.use("/api/v1/years", require("./routers/yearsRouter"));
+app.use("/api/v1/progress", require("./routers/progressRouter"));
+app.use("/api/v1/blog", require("./routers/blogRouter"));
 
 
 

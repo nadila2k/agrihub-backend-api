@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("./../database/dbConfig");
 
 const Crops = require('./cropsModel');
+const Years = require('./yearsModel'); // Import the Years model
 
 const CropsStatistic = sequelize.define(
   'cropsStatistic',
@@ -10,10 +11,6 @@ const CropsStatistic = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false,
-    },
-    year: {
-      type: DataTypes.DATE,
       allowNull: false,
     },
     weight: {
@@ -29,6 +26,14 @@ const CropsStatistic = sequelize.define(
       allowNull: false,
       references: {
         model: Crops,
+        key: 'id',
+      },
+    },
+    yearId: {  
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Years, 
         key: 'id',
       },
     },

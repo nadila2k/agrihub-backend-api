@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require("./../database/dbConfig");
 const User = require('./userModel');
 const CropsStatistic = require('./cropsStatisticModel');
+const Progress = require('./progressModel'); 
 
 const FarmerStatistic = sequelize.define(
   'farmerStatistic',
@@ -20,9 +21,13 @@ const FarmerStatistic = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    process: {
+    progressId: {  
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: Progress,
+        key: 'id',
+      },
     },
     userId: {
       type: DataTypes.INTEGER,
