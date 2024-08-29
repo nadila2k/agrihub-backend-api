@@ -33,7 +33,7 @@ app.use("/api/v1/farmerStatistic", require("./routers/farmerStatisticRouter"));
 app.use("/api/v1/product", require("./routers/productsRouter"));
 app.use("/api/v1/years", require("./routers/yearsRouter"));
 app.use("/api/v1/progress", require("./routers/progressRouter"));
-app.use("/api/v1/blog", require("./routers/blogRouter"));
+app.use("/api/v1/blogs", require("./routers/blogRouter"));
 
 
 

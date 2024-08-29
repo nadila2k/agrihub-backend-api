@@ -3,8 +3,7 @@ const router = express.Router();
 
 const { createCrops, updateCrops ,getAllCrops  } = require("../controller/cropsController");
 
-router.route("/createCrops").post(createCrops);
-router.route("/updateCrops").put(updateCrops);
-router.route("/getAllCrops").get(getAllCrops);
+router.route("/").post(createCrops).get(getAllCrops);
+router.route("/:id").put(updateCrops);
 
 module.exports = router;

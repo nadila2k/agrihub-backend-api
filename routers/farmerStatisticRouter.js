@@ -3,8 +3,8 @@ const router = express.Router();
 
 const { createFarmerStatistic, updateFarmerStatistic ,getAllFarmerStatistic  } = require("../controller/farmerStatisticController");
 
-router.route("/createFarmerStatistic").post(createFarmerStatistic);
-router.route("/updateFarmerStatistic").put(updateFarmerStatistic);
-router.route("/getAllFarmerStatistic").get(getAllFarmerStatistic);
+router.route("/").post(createFarmerStatistic).get(getAllFarmerStatistic);
+router.route("/:id").put(updateFarmerStatistic);
+
 
 module.exports = router;
