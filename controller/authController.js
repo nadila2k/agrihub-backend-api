@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const createSendToken = require("../service/createSendToken");
 
 const signIn = async (req, res) => {
   console.log("Sign in");
@@ -21,12 +22,10 @@ const signIn = async (req, res) => {
       return res.status(401).json({ message: "Incorrect password." });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: "Sign in successful!",
-        user: { id: user.id, email: user.email, role: user.role },
-      });
+    return res.status(200).json({
+      message: "Sign in successful!",
+      user: { id: user.id, email: user.email, role: user.role },
+    });
   } catch (error) {
     console.error("Error during sign-in:", error);
     return res
@@ -77,18 +76,11 @@ const signUp = async (req, res, next) => {
       role,
     });
 
-    return res.status(201).json({
-      message: "User registered successfully!",
-      user: {
-        id: newUser.id,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-        district: newUser.district,
-        phoneNumber: newUser.phoneNumber,
-        role: newUser.role,
-      },
-    });
+    if (newUser) {
+      createSendToken(newUser, 201, 'User registered successfully!', res);
+    } else {
+      throw new Error("Error when user creating");
+    }
   } catch (error) {
     console.error("Error during user registration:", error);
     return res
