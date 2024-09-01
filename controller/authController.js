@@ -22,10 +22,11 @@ const signIn = async (req, res) => {
       return res.status(401).json({ message: "Incorrect password." });
     }
 
-    return res.status(200).json({
-      message: "Sign in successful!",
-      user: { id: user.id, email: user.email, role: user.role },
-    });
+    if (user) {
+      createSendToken(user, 200, 'Sign in successful!', res);
+    } else {
+      throw new Error("Error when user sign-in");
+    }
   } catch (error) {
     console.error("Error during sign-in:", error);
     return res
