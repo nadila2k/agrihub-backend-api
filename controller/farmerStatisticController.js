@@ -10,4 +10,9 @@ const getAllFarmerStatistic = async (req, res) => {
   console.log("getall Farmer Statics")
 };
 
-module.exports = {  createFarmerStatistic, updateFarmerStatistic ,getAllFarmerStatistic };
+
+const getFarmerStatistic = async (req, res) => {
+  console.log("get Farmer Statics")
+};
+
+module.exports = {  createFarmerStatistic, updateFarmerStatistic ,getAllFarmerStatistic,getFarmerStatistic };

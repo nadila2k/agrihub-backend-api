@@ -14,4 +14,8 @@ const getAllProduct = async (req, res) => {
   console.log(" getall  Product")
 };
 
-module.exports = {  createProduct, updateProduct ,deleteProduct,getAllProduct };
+const getProduct = async (req, res) => {
+  console.log(" get  Product")
+};
+
+module.exports = {  createProduct, updateProduct ,deleteProduct,getAllProduct,getProduct };

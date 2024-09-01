@@ -3,22 +3,31 @@ const Crops = require("../models/cropsModel");
 const createCrops = async (req, res) => {
   console.log("create crops");
   try {
-    console.log("create crops");
+    const { id } = req.params;
 
-    const { name } = req.body;
+    
+    const crop = await Crops.findByPk(id);
 
-    const newCrop = await Crops.create({ name });
+    
+    if (!crop) {
+      return res.status(404).json({
+        success: false,
+        message: "Crop not found.",
+      });
+    }
 
-    res.status(201).json({
+    
+    await crop.destroy();
+
+    res.status(200).json({
       success: true,
-      message: "Crop created successfully!",
-      data: newCrop
+      message: "Crop deleted successfully!",
     });
   } catch (error) {
-    console.error("Error creating crop:", error);
+    console.error("Error deleting crop:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to create crop",
+      message: "Failed to delete crop",
       error: error.message,
     });
   }
