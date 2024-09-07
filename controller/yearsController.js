@@ -16,6 +16,7 @@ const getAllYears = async (req, res) => {
       success: true,
       data: years,
     });
+    
   } catch (error) {
     console.error("Error fetching years:", error);
 

@@ -7,18 +7,18 @@ const { connectDb } = require("./database/dbConfig.js");
 const User = require("./models/userModel.js");
 const Crops = require("./models/cropsModel.js");
 const CropsStatistic = require("./models/cropsStatisticModel.js");
-const FarmerStatistic  = require("./models/farmerStatisticModel.js");
-const Product  = require("./models/productModel.js");
+const FarmerStatistic = require("./models/farmerStatisticModel.js");
+const Product = require("./models/productModel.js");
 const Years = require("./models/yearsModel.js");
 const progress = require("./models/progressModel.js");
 const Blog = require("./models/blogModel.js");
-
+const Months = require("./models/monthModel");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware Stack
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(
   cors({
@@ -34,8 +34,17 @@ app.use("/api/v1/product", require("./routers/productsRouter"));
 app.use("/api/v1/years", require("./routers/yearsRouter"));
 app.use("/api/v1/progress", require("./routers/progressRouter"));
 app.use("/api/v1/blogs", require("./routers/blogRouter"));
+app.use("/api/v1/month", require("./routers/monthRouter"));
 
-
+// Associations
+Crops.hasMany(CropsStatistic, {
+  foreignKey: "cropsId",
+  as: "cropsStatistics",
+});
+CropsStatistic.belongsTo(Crops, {
+  foreignKey: 'cropsId',
+  as: 'crop'
+})
 
 app.listen(port, () => {
   connectDb();

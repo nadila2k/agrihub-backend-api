@@ -3,12 +3,40 @@ const Crops = require("../models/cropsModel");
 const createCrops = async (req, res) => {
   console.log("create crops");
   try {
-    const { id } = req.params;
+    const { name } = req.body;
 
-    
+    if (!name) {
+      return res.status(400).json({ message: "Crop name is required." });
+    }
+
+    const newCrop = await Crops.create({ name });
+
+    res.status(201).json({
+      success: true,
+      message: "Crop created successfully!",
+      data: newCrop,
+    });
+  } catch (error) {
+    console.error("Error creating crop:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create crop",
+      error: error.message,
+    });
+  }
+ 
+};
+
+const updateCrops = async (req, res) => {
+  console.log("updateCrops");
+  try {
+    const { id } = req.params;
+    const { name } = req.body; // Assuming you are updating the crop name
+
+    // Find the crop by ID
     const crop = await Crops.findByPk(id);
 
-    
+    // Check if the crop exists
     if (!crop) {
       return res.status(404).json({
         success: false,
@@ -16,25 +44,25 @@ const createCrops = async (req, res) => {
       });
     }
 
-    
-    await crop.destroy();
+    // Update the crop details
+    crop.name = name;
+
+    // Save the updated crop
+    await crop.save();
 
     res.status(200).json({
       success: true,
-      message: "Crop deleted successfully!",
+      message: "Crop updated successfully!",
+      crop: crop, // Optionally, return the updated crop
     });
   } catch (error) {
-    console.error("Error deleting crop:", error);
+    console.error("Error updating crop:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to delete crop",
+      message: "Failed to update crop",
       error: error.message,
     });
   }
-};
-
-const updateCrops = async (req, res) => {
-  console.log("updateCrops");
 };
 
 const getAllCrops = async (req, res) => {

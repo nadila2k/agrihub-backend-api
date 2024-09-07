@@ -1,21 +1,22 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("./../database/dbConfig");
 
-const Years = sequelize.define(
-  "years",
+const Months = sequelize.define(
+  "month",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true, 
       allowNull: false,
     },
-    year: {
-      type: DataTypes.INTEGER,
+    month: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
   { timestamps: true }
 );
 
-module.exports = Years;
+module.exports = Months;
+

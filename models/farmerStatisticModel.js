@@ -3,6 +3,7 @@ const { sequelize } = require("./../database/dbConfig");
 const User = require('./userModel');
 const CropsStatistic = require('./cropsStatisticModel');
 const Progress = require('./progressModel'); 
+const Months = require('./monthModel');
 
 const FarmerStatistic = sequelize.define(
   'farmerStatistic',
@@ -17,9 +18,13 @@ const FarmerStatistic = sequelize.define(
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    month: {
-      type: DataTypes.DATE,
+    monthId: {  
+      type: DataTypes.INTEGER,  // Ensure this matches Months.id
       allowNull: false,
+      references: {
+        model: Months,
+        key: 'id',
+      },
     },
     progressId: {  
       type: DataTypes.INTEGER,
@@ -50,3 +55,4 @@ const FarmerStatistic = sequelize.define(
 );
 
 module.exports = FarmerStatistic;
+

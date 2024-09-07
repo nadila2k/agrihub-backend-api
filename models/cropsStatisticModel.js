@@ -41,4 +41,5 @@ const CropsStatistic = sequelize.define(
   { timestamps: true }
 );
 
+
 module.exports = CropsStatistic;
