@@ -1,17 +1,17 @@
-const progress = require("../models/progressModel.js");
+const Progress = require("../models/progressModel.js");
 
 const getAllProgress = async (req, res) => {
-  console.log(" get All Progress");
+  console.log("get All Progress");
 
   try {
-    
-    const progress = await progress.findAll({
+    // Fetch all progress entries from the database
+    const progressList = await Progress.findAll({
       attributes: ['id', 'name']
     });
 
     res.status(200).json({
       success: true,
-      data: progress,
+      data: progressList,
     });
   } catch (error) {
     console.error("Error fetching progress:", error);
@@ -24,4 +24,4 @@ const getAllProgress = async (req, res) => {
   }
 };
 
-module.exports = {getAllProgress};
+module.exports = { getAllProgress };

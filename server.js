@@ -10,7 +10,7 @@ const CropsStatistic = require("./models/cropsStatisticModel.js");
 const FarmerStatistic = require("./models/farmerStatisticModel.js");
 const Product = require("./models/productModel.js");
 const Years = require("./models/yearsModel.js");
-const progress = require("./models/progressModel.js");
+const Progress = require("./models/progressModel.js");
 const Blog = require("./models/blogModel.js");
 const Months = require("./models/monthModel");
 
@@ -45,6 +45,57 @@ CropsStatistic.belongsTo(Crops, {
   foreignKey: 'cropsId',
   as: 'crop'
 })
+
+// FarmerStatistic to Progress Association
+Progress.hasMany(FarmerStatistic, {
+  foreignKey: "progressId",
+  as: "farmerStatistics",
+});
+FarmerStatistic.belongsTo(Progress, {
+  foreignKey: "progressId",
+  as: "progress",
+});
+
+// FarmerStatistic to Months Association
+Months.hasMany(FarmerStatistic, {
+  foreignKey: "monthId",
+  as: "farmerStatistics",
+});
+FarmerStatistic.belongsTo(Months, {
+  foreignKey: "monthId",
+  as: "month",
+});
+
+User.hasMany(FarmerStatistic, {
+  foreignKey: "userId",
+  as: "farmerStatistics",
+});
+FarmerStatistic.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user",
+});
+
+CropsStatistic.hasMany(FarmerStatistic, {
+  foreignKey: "cropsStatisticId",
+  as: "farmerStatistics",
+});
+FarmerStatistic.belongsTo(CropsStatistic, {
+  foreignKey: "cropsStatisticId",
+  as: "cropsStatistic",
+});
+
+// In CropsStatistic model file
+CropsStatistic.belongsTo(Years, {
+  foreignKey: 'yearId',
+  as: 'year',
+});
+
+// In Years model file
+Years.hasMany(CropsStatistic, {
+  foreignKey: 'yearId',
+  as: 'cropsStatistics',
+});
+
 
 app.listen(port, () => {
   connectDb();

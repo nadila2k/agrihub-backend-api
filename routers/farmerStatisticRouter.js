@@ -7,4 +7,5 @@ router.route("/").post(createFarmerStatistic).get(getAllFarmerStatistic);
 router.route("/:id").put(updateFarmerStatistic).get(getFarmerStatistic);
 
 
+
 module.exports = router;

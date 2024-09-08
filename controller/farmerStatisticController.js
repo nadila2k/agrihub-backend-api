@@ -1,7 +1,10 @@
-
-
-// Create Farmer Statistic
 const FarmerStatistic = require('../models/farmerStatisticModel'); // Import the model
+const CropsStatistic = require('../models/cropsStatisticModel'); // Import the model
+const Crops = require("../models/cropsModel");
+const Years = require("../models/yearsModel");
+const Progress = require("../models/progressModel.js"); // Fix the Progress import (uppercase)
+const Months = require("../models/monthModel.js"); // Import the Months model
+
 
 // Create Farmer Statistic
 const createFarmerStatistic = async (req, res) => {
@@ -34,30 +37,27 @@ const createFarmerStatistic = async (req, res) => {
 // Update Farmer Statistic
 const updateFarmerStatistic = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { perch, monthId, progressId, userId, cropsStatisticId } = req.body;
-
+    const { id } = req.params; // Get the FarmerStatistic ID from the request params
+    const { progressId } = req.body; // Extract only progressId from the request body
+  
+    // Update only the progressId in the FarmerStatistic
     const [updatedRows] = await FarmerStatistic.update(
       {
-        perch,
-        monthId,
         progressId,
-        userId,
-        cropsStatisticId,
       },
       { where: { id } }
     );
-
+  
     if (updatedRows === 0) {
       return res.status(404).json({
         success: false,
         message: "Farmer statistic not found",
       });
     }
-
+  
     res.status(200).json({
       success: true,
-      message: "Farmer statistic updated successfully",
+      message: "Progress updated successfully",
     });
   } catch (error) {
     console.error("Error updating farmer statistic:", error);
@@ -67,6 +67,7 @@ const updateFarmerStatistic = async (req, res) => {
       error: error.message,
     });
   }
+  
 };
 
 // Get All Farmer Statistics
@@ -90,30 +91,53 @@ const getAllFarmerStatistic = async (req, res) => {
 // Get Farmer Statistic by ID
 const getFarmerStatistic = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // Extract id from params
+    console.log(id); // Log id to verify
 
-    const farmerStatistic = await FarmerStatistic.findByPk(id);
+    const farmerStatistics = await FarmerStatistic.findAll({
+      where: { userId: id }, // Filter by userId
+      include: [
+        {
+          model: CropsStatistic,
+          as: 'cropsStatistic',
+          include: [
+            { model: Crops, as: 'crop' }, // Include Crops data
+            { model: Years, as: 'year' } // Include Years data
+          ]
+        },
+        { model: Progress, as: 'progress' },
+        { model: Months, as: 'month' }
+      ],
+    });
 
-    if (!farmerStatistic) {
+    if (farmerStatistics.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Farmer statistic not found",
+        message: "No farmer statistics found for this user",
       });
     }
 
     res.status(200).json({
       success: true,
-      data: farmerStatistic,
+      data: farmerStatistics,
     });
   } catch (error) {
-    console.error("Error fetching farmer statistic:", error);
+    console.error("Error fetching farmer statistics by user ID:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch farmer statistic",
+      message: "Failed to fetch farmer statistics by user ID",
       error: error.message,
     });
   }
+
+
 };
 
+
+
+
 module.exports = { createFarmerStatistic, updateFarmerStatistic, getAllFarmerStatistic, getFarmerStatistic };
+
+
+
 
