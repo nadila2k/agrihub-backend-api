@@ -89,4 +89,37 @@ const getAllCrops = async (req, res) => {
   }
 };
 
-module.exports = { createCrops, updateCrops, getAllCrops };
+const deleteBlog = async (req, res) => {
+  const { id } = req.params; // Extract blog ID from request parameters
+
+  console.log(`Deleting blog with ID: ${id}`);
+
+  try {
+    // Find and delete the blog with the given ID
+    const blog = await Blog.findByPk(id);
+
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog not found",
+      });
+    }
+
+    // Delete the blog
+    await blog.destroy();
+
+    res.status(200).json({
+      success: true,
+      message: "Blog deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting blog:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete blog",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { createCrops, updateCrops, getAllCrops,deleteBlog };

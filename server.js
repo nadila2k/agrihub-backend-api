@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
+const bodyParser = require('body-parser');
 
 const { connectDb } = require("./database/dbConfig.js");
 const User = require("./models/userModel.js");
@@ -20,6 +21,8 @@ const port = process.env.PORT || 5000;
 // Middleware Stack
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads')); 
 app.use(
   cors({
     origin: "http://localhost:3000",
