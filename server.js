@@ -38,6 +38,7 @@ app.use("/api/v1/years", require("./routers/yearsRouter"));
 app.use("/api/v1/progress", require("./routers/progressRouter"));
 app.use("/api/v1/blogs", require("./routers/blogRouter"));
 app.use("/api/v1/month", require("./routers/monthRouter"));
+app.use("/api/v1/analyst", require("./routers/analystRouter"));
 
 // Associations
 Crops.hasMany(CropsStatistic, {

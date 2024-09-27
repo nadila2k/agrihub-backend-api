@@ -140,27 +140,34 @@ const getAllProduct = async (req, res) => {
 
 
 const getProduct = async (req, res) => {
+  console.log("Fetching products for the user");
+
   try {
-    const { id } = req.params;
+    const { userId } = req.params; // Assuming userId is passed as a route parameter
 
-    const product = await Product.findByPk(id);
+    const products = await Product.findAll({
+      where: {
+        userId: userId, // Adjust this field if your Product model uses a different field name for the user
+      },
+      attributes: ['id', 'name', 'qty', 'description', 'price', 'availability', 'productType', 'image'],
+    });
 
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+    if (products.length === 0) {
+      return res.status(404).json({ success: false, message: "No products found for the user" });
     }
-
-    const productWithImageUrl = {
-      ...product.dataValues,
-      image: product.image ? `${req.protocol}://${req.get('host')}/${product.image}` : null
-    };
 
     res.status(200).json({
       success: true,
-      data: productWithImageUrl
+      message: "Products retrieved successfully",
+      data: products,
     });
   } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).json({ success: false, message: "Failed to fetch product" });
+    console.error("Error retrieving products:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while retrieving the products",
+      error: error.message,
+    });
   }
 };
 

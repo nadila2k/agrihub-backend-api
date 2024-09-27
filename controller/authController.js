@@ -74,7 +74,7 @@ const signUp = async (req, res, next) => {
       password,
       district,
       phoneNumber,
-      role,
+      role
     });
 
     if (newUser) {
@@ -90,4 +90,74 @@ const signUp = async (req, res, next) => {
   }
 };
 
-module.exports = { signIn, signUp };
+const getUserById = async (req, res) => {
+  console.log("Fetching user by ID");
+  try {
+    const { id } = req.params;
+
+    const user = await User.findOne({
+      where: { id },
+      attributes: { exclude: ['password'] },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "User retrieved successfully",
+      data: user,
+    });
+
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    return res.status(500).json({
+      message: "An error occurred while retrieving the user",
+      error: error.message,
+    });
+  }
+};
+
+const updateUser = async (req, res) => {
+  console.log("Updating user by ID");
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, email, district, phoneNumber } = req.body;
+
+    // Validate required fields
+    if (!firstName || !lastName || !email || !district || !phoneNumber) {
+      return res.status(400).json({ success: false, message: "All fields are required." });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ where: { id } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    // Update user details
+    await user.update({
+      firstName,
+      lastName,
+      email,
+      district,
+      phoneNumber,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the user",
+      error: error.message,
+    });
+  }
+};
+module.exports = { signIn, signUp ,getUserById ,updateUser};
