@@ -5,5 +5,5 @@ const {getFarmerAnalyst, getAdminChart,getFarmerChartId } = require("../controll
 
 router.route("/").get(getFarmerAnalyst);
 router.route("/adminChart").get(getAdminChart);
-router.route("/farmerChart").get(getAdminChart);
+router.route("/farmerChart").get(getFarmerChartId);
 module.exports = router;
