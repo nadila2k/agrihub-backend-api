@@ -27,7 +27,7 @@ const getFarmerAnalyst = async (req, res) => {
     LEFT JOIN crops c ON c.id = cs."cropsId"
     LEFT JOIN public."farmerStatistics" fs ON fs."cropsStatisticId" = cs.id
     LEFT JOIN months m ON fs."monthId" = m.id
-    WHERE y.year=${year} AND cs."cropsId"=${cropsId}
+    WHERE y.year=${year} AND cs."cropsId"=${cropsId}  AND fs."progressId" <> 2;
     GROUP BY m.id
   `);
 
